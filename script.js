@@ -1,8 +1,7 @@
-console.log("Hello, World!");
+const NUMBER_OF_ROUNDS = 5
 
 function computerPlay(){
     let randomSelection = getRandomIntBetweenZeroAndTwo();
-    console.log(randomSelection)
     switch(randomSelection){
         case 0:
             return 'Rock'
@@ -34,8 +33,33 @@ function playOneRound(playerSelection, computerSelection){
     }
 }
 
-console.log(computerPlay())
-console.log(normalizeString("hELLO"))
-console.log(playOneRound('RoCk', 'Scissors'))
-console.log(playOneRound('PAPER', 'Paper'))
-console.log(playOneRound('Paper', 'Scissors'))
+function showCurrentScore(currentPlayerScore, currentComputerScore){
+    console.log(currentPlayerScore + " : " + currentComputerScore)
+}
+
+function game(){
+    let currentPlayerScore = 0
+    let currentComputerScore = 0
+    for(let i = 0; i < NUMBER_OF_ROUNDS; i++){
+        //ask for user input
+        let playerSelection = window.prompt("Choose Rock, Paper, or Scissors")
+        let computerSelection = computerPlay()
+        let result = playOneRound(playerSelection, computerSelection)
+        console.log(result)
+        if(result.charAt(0) == 'I'){ //Result was a tie
+            currentComputerScore += 1
+            currentPlayerScore += 1
+            showCurrentScore(currentPlayerScore, currentComputerScore)
+        }
+        else if(result.charAt(4) == 'W'){
+            currentPlayerScore += 1
+            showCurrentScore(currentPlayerScore, currentComputerScore)
+        }
+        else{
+            currentComputerScore += 1
+            showCurrentScore(currentPlayerScore, currentComputerScore)
+        }
+    }
+}
+
+game()
