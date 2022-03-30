@@ -37,6 +37,18 @@ function showCurrentScore(currentPlayerScore, currentComputerScore){
     console.log(currentPlayerScore + " : " + currentComputerScore)
 }
 
+function showEndResult(currentPlayerScore ,currentComputerScore){
+    if(currentComputerScore == currentPlayerScore){
+        console.log("It's a Tie!")
+    }
+    if(currentPlayerScore > currentComputerScore){
+        console.log("You've won! Congratulations")
+    }
+    if(currentComputerScore > currentPlayerScore){
+        console.log("Oh no! You lost")
+    }
+}
+
 function game(){
     let currentPlayerScore = 0
     let currentComputerScore = 0
@@ -60,6 +72,8 @@ function game(){
             showCurrentScore(currentPlayerScore, currentComputerScore)
         }
     }
+    showEndResult(currentPlayerScore, currentComputerScore)
+    
 }
 
 game()
