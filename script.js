@@ -1,8 +1,10 @@
 const NUMBER_OF_ROUNDS = 5
+let currentPlayerScore = 0;
+let currentComputerScore = 0;
 
-function computerPlay(){
+function computerPlay() {
     let randomSelection = getRandomIntBetweenZeroAndTwo();
-    switch(randomSelection){
+    switch (randomSelection) {
         case 0:
             return 'Rock'
         case 1:
@@ -12,68 +14,71 @@ function computerPlay(){
     }
 }
 
-function getRandomIntBetweenZeroAndTwo(){
+function getRandomIntBetweenZeroAndTwo() {
     return Math.floor(Math.random() * 3);
 }
 
-function normalizeString(string){
-    return string.charAt(0).toUpperCase()+string.slice(1).toLowerCase()
-}
 
-function playOneRound(playerSelection, computerSelection){
-    playerSelection = normalizeString(playerSelection)
-    if(playerSelection == computerSelection){
-        return "It's a Tie! " + playerSelection + " against " + computerSelection
+
+function playOneRound(playerSelection, computerSelection) {
+
+
+    let result = "";
+
+    if (playerSelection == computerSelection) {
+        result += "It's a Tie! " + playerSelection + " against " + computerSelection
+            + "<br><br> Player score: " + currentPlayerScore + "<br> Computer score " + currentComputerScore;
     }
-    else if(playerSelection == 'Rock' && computerSelection == 'Paper' || playerSelection == 'Scissors' && computerSelection == 'Rock' || playerSelection == 'Paper' && computerSelection == 'Scissors'){
-        return "You Lose! " + computerSelection + " beats " + playerSelection
+    else if (playerSelection == 'Rock' && computerSelection == 'Paper' || playerSelection == 'Scissors' && computerSelection == 'Rock' || playerSelection == 'Paper' && computerSelection == 'Scissors') {
+        currentComputerScore += 1;
+        result += "You Lose! " + computerSelection + " beats " + playerSelection
+            + "<br><br> Player score: " + currentPlayerScore + "<br> Computer score " + currentComputerScore;
+
+        if (currentComputerScore == 5) {
+            result += "<br><br>The Computer won the game! Reload to play again!";
+            btns.forEach(button => {
+                button.disabled = true;
+            });
+        }
     }
     else {
-        return "You Win! " + playerSelection + " beats " + computerSelection
-    }
-}
+        currentPlayerScore += 1;
+        result += "You Win! " + playerSelection + " beats " + computerSelection
+            + "<br><br> Player score: " + currentPlayerScore + "<br> Computer score " + currentComputerScore;
 
-function showCurrentScore(currentPlayerScore, currentComputerScore){
-    console.log(currentPlayerScore + " : " + currentComputerScore)
-}
-
-function showEndResult(currentPlayerScore ,currentComputerScore){
-    if(currentComputerScore == currentPlayerScore){
-        console.log("It's a Tie!")
-    }
-    if(currentPlayerScore > currentComputerScore){
-        console.log("You've won! Congratulations")
-    }
-    if(currentComputerScore > currentPlayerScore){
-        console.log("Oh no! You lost")
-    }
-}
-
-function game(){
-    let currentPlayerScore = 0
-    let currentComputerScore = 0
-    for(let i = 0; i < NUMBER_OF_ROUNDS; i++){
-        //ask for user input
-        let playerSelection = window.prompt("Choose Rock, Paper, or Scissors")
-        let computerSelection = computerPlay()
-        let result = playOneRound(playerSelection, computerSelection)
-        console.log(result)
-        if(result.charAt(0) == 'I'){ //Result was a tie
-            currentComputerScore += 1
-            currentPlayerScore += 1
-            showCurrentScore(currentPlayerScore, currentComputerScore)
-        }
-        else if(result.charAt(4) == 'W'){
-            currentPlayerScore += 1
-            showCurrentScore(currentPlayerScore, currentComputerScore)
-        }
-        else{
-            currentComputerScore += 1
-            showCurrentScore(currentPlayerScore, currentComputerScore)
+        if (currentPlayerScore == 5) {
+            result += "<br><br>You won the game! Reload to play again!";
+            btns.forEach(button => {
+                button.disabled = true;
+            });
         }
     }
-    showEndResult(currentPlayerScore, currentComputerScore)
-    
+
+    document.getElementById('result').innerHTML = result;
+    return;
 }
 
-game()
+let playerSelection;
+
+const btns = document.querySelectorAll('button');
+
+btns.forEach(button => {
+    button.addEventListener('click', e => {
+        if (e.target.matches('#rock')) {
+            playerSelection = 'Rock';
+            computerSelection = computerPlay();
+            playOneRound(playerSelection, computerSelection);
+        }
+        else if (e.target.matches('#paper')) {
+            playerSelection = 'Paper';
+            computerSelection = computerPlay();
+            playOneRound(playerSelection, computerSelection);
+        }
+        else if (e.target.matches('#scissors')) {
+            playerSelection = 'Scissors';
+            computerSelection = computerPlay();
+            playOneRound(playerSelection, computerSelection);
+        }
+    });
+});
+
